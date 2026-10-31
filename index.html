@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="te">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AP Sand Management System</title>
+<title>sand.ap.gov.in</title>
 
 <style>
 *{box-sizing:border-box}
@@ -193,15 +192,15 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-/* FIREBASE CONFIGURATION */
+/* NEW FIREBASE PROJECT CONFIGURATION */
 const firebaseConfig = {
- apiKey: "AIzaSyBAxO9XUQ2ChADnpZMFEFqGmyJmWsxxko8",
- authDomain: "ap-sand-billing.firebaseapp.com",
- projectId: "ap-sand-billing",
- storageBucket: "ap-sand-billing.firebasestorage.app",
- messagingSenderId: "908803132126",
- appId: "1:908803132126:web:04e7bdafaa6baf80bb104f",
- measurementId: "G-RXHD8RW3WX"
+ apiKey: "AIzaSyBnuw1QG9jIKU2ptvJyYoORKPqVe82Onyo",
+ authDomain: "sandapgovin-52e84.firebaseapp.com",
+ projectId: "sandapgovin-52e84",
+ storageBucket: "sandapgovin-52e84.firebasestorage.app",
+ messagingSenderId: "428761496236",
+ appId: "1:428761496236:web:264ea845a5ecacde7ebd09",
+ measurementId: "G-NSDG30D3V6"
 };
 
 const STORAGE_KEY = "apSandOrders_v1";
@@ -225,7 +224,7 @@ function setStatus(message) {
  document.getElementById("status").textContent = message;
 }
 
-/* FIREBASE INITIALIZATION - PRINT దీనిపై ఆధారపడదు */
+/* FIREBASE INITIALIZATION */
 try {
  if (typeof firebase !== "undefined") {
   if (!firebase.apps.length) {
@@ -303,7 +302,8 @@ function getLocalOrders() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
  } catch(error) {
   return {};
- }
+}
+
 }
 
 function saveLocal() {
@@ -378,7 +378,6 @@ async function loadOrder() {
 
  const requestNumber = ++loadRequest;
 
- /* ముందుగా మొబైల్‌లో వెతుకు */
  const localOrders = getLocalOrders();
 
  if (localOrders[order]) {
@@ -387,7 +386,6 @@ async function loadOrder() {
   return;
  }
 
- /* Firebase అందుబాటులో లేకపోతే ఇక్కడే ఆపు */
  if (!firebaseReady || !db) {
   setStatus("ఈ Order మొబైల్‌లో లేదు. Firebase కనెక్ట్ కాలేదు.");
   return;
@@ -489,7 +487,6 @@ function makeQR() {
 
   section.appendChild(img);
 
-  /* QR సర్వర్ స్పందించకపోయినా Print ఆగదు */
   setTimeout(() => finish(false),8000);
  });
 }
@@ -510,7 +507,7 @@ async function previewBill() {
  setStatus("Bill Preview సిద్ధంగా ఉంది.");
 }
 
-/* PRINT - FIREBASE కోసం వేచి ఉండదు */
+/* PRINT */
 async function printBill() {
  updateBill();
 
@@ -522,14 +519,12 @@ async function printBill() {
   return;
  }
 
- /* మొబైల్‌లో వెంటనే సేవ్ */
  const saved = saveLocal();
 
  if (!saved) return;
 
  setStatus("Bill Print సిద్ధం అవుతోంది...");
 
- /* Firebase సేవ్‌ను వేరుగా ప్రయత్నించు */
  if (firebaseReady && db) {
   const data = collectData();
   data.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
@@ -539,7 +534,6 @@ async function printBill() {
    .catch(error => console.error("Firebase Save Error:",error));
  }
 
- /* QR తయారైనా, QR సర్వర్ విఫలమైనా Print కొనసాగుతుంది */
  await makeQR();
 
  setStatus("Print ప్రారంభమవుతోంది...");
@@ -572,7 +566,6 @@ function resetForm() {
 
 /* ORDER ID EVENTS */
 document.getElementById("order").addEventListener("change",loadOrder);
-
 document.getElementById("order").addEventListener("blur",loadOrder);
 
 document.getElementById("order").addEventListener("keydown",e => {
