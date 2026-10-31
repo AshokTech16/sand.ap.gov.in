@@ -14,7 +14,7 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 .form label{display:block;margin-top:10px;font-size:15px;font-weight:bold}
 .form input,.form textarea{width:100%;padding:10px;margin-top:4px;border:1px solid #777;border-radius:4px;font-size:16px}
 .form button{width:100%;padding:12px;margin-top:12px;border:0;border-radius:4px;background:#176ca5;color:white;font-size:16px;font-weight:bold}
-#status{text-align:center;margin-top:8px;color:#176ca5;font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+#status{text-align:center;margin-top:8px;color:#176ca5;font-size:13px;font-weight:bold}
 
 #receipt{width:100%;max-width:400px;margin:auto;background:white;color:black;font-family:"Courier New",monospace;font-weight:700}
 .copy{width:100%;padding:5px;margin:0;background:white}
@@ -59,7 +59,6 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <body>
 
 <div class="form" id="entryForm">
-
 <h2>AP SAND MANAGEMENT SYSTEM</h2>
 <h3>Sand Bill Entry</h3>
 
@@ -128,7 +127,6 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <button type="button" onclick="printBill()">Print 3-inch Bill / PDF</button>
 <button type="button" onclick="saveCurrent()">Save Order Details</button>
 <button type="button" onclick="resetForm()">New Bill / Clear Form</button>
-
 </div>
 
 <div id="receipt">
@@ -141,10 +139,8 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
         <span class="management">MANAGEMENT SYSTEM</span>
       </div>
     </div>
-
     <div class="subtitle">Consumer Copy</div>
     <div class="line"></div>
-
     <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o1">-</span></div>
     <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t1">-</span></div>
     <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c1">-</span></div>
@@ -167,10 +163,8 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
         <span class="management">MANAGEMENT SYSTEM</span>
       </div>
     </div>
-
     <div class="subtitle">Driver Copy</div>
     <div class="line"></div>
-
     <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o2">-</span></div>
     <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t2">-</span></div>
     <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c2">-</span></div>
@@ -188,252 +182,227 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
   <div id="billQR">
     <div id="qrThanks">Thank You</div>
   </div>
-
 </div>
 
-<!-- Firebase Libraries -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-const STORAGE_KEY = "apSandOrders_v1";
+const STORAGE_KEY="apSandOrders_v1";
+const COLLECTION_NAME="orders";
 
+/* మీ కొత్త Firebase Project Configuration */
+const firebaseConfig = {
+  apiKey: "AIzaSyBnuwQ1G9jIKU2ptvJyYoORKPqVe82Onyo",
+  authDomain: "sandapgovin-52e84.firebaseapp.com",
+  projectId: "sandapgovin-52e84",
+  storageBucket: "sandapgovin-52e84.firebasestorage.app",
+  messagingSenderId: "428761496236",
+  appId: "1:428761496236:web:264ea845a5ecacde7ebd09",
+  measurementId: "G-NSDG30D3V6"
+};
+
+/* పాత QR లింక్ */
 const REGISTRATION_URL =
 "https://chashok1629-tech.github.io/Sand---billing-/";
 
-const firebaseConfig = {
- apiKey: "AIzaSyBnuw1QG9jIKU2ptvJyYoORKPqVe82Onyo",
- authDomain: "sandapgovin-52e84.firebaseapp.com",
- projectId: "sandapgovin-52e84",
- storageBucket: "sandapgovin-52e84.firebasestorage.app",
- messagingSenderId: "428761496236",
- appId: "1:428761496236:web:264ea845a5ecacde7ebd09",
- measurementId: "G-NSDG30D3V6"
-};
+let db=null;
+let firebaseReady=false;
+let authReady=false;
+let connectionPromise=null;
 
-let db = null;
-let auth = null;
-let firebaseReady = false;
-let connecting = false;
+function firebaseConnect(){
+ try{
+  if(!firebase.apps.length){
+   firebase.initializeApp(firebaseConfig);
+  }
 
-const fieldIds = [
+  const auth=firebase.auth();
+  db=firebase.firestore();
+
+  connectionPromise=auth.signInAnonymously()
+   .then(()=>{
+    authReady=true;
+    firebaseReady=true;
+    setStatus("Firebase కనెక్ట్ అయింది. బిల్ నమోదు చేయండి.");
+    return true;
+   })
+   .catch(error=>{
+    authReady=false;
+    firebaseReady=false;
+    setStatus("Firebase Login సమస్య: "+error.message+
+    " | Print పనిచేస్తుంది.");
+    console.error("Firebase Auth:",error);
+    return false;
+   });
+
+ }catch(error){
+  setStatus("Firebase ప్రారంభం కాలేదు. Print పనిచేస్తుంది.");
+  console.error(error);
+ }
+}
+
+const fieldIds=[
  "order","trip","customer","mobile","quantity","supply","date",
  "driver","driverMobile","vehicle","address","regId","consumerName",
  "consumerMobile","constructionName","regDateTime","regType","regQty",
  "regAddress"
 ];
 
-function setStatus(message) {
- document.getElementById("status").textContent = message;
+function getOrders(){
+ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}
+ catch(e){return {}}
 }
 
-function getOrders() {
- try {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
- } catch(e) {
-  return {};
- }
+function getValue(id){
+ const el=document.getElementById(id);
+ return el ? el.value.trim()||"-" : "-";
 }
 
-function getValue(id) {
- const el = document.getElementById(id);
- return el ? el.value.trim() || "-" : "-";
+function put(id,value){
+ document.getElementById(id).textContent=value;
 }
 
-function put(id,value) {
- document.getElementById(id).textContent = value;
+function setStatus(message){
+ document.getElementById("status").textContent=message;
 }
 
-function formatDate(value) {
- if(!value || value === "-") return "-";
+function formatDate(value){
+ if(!value||value==="-")return "-";
+ const dt=new Date(value);
+ if(isNaN(dt.getTime()))return value;
 
- const dt = new Date(value);
- if(isNaN(dt.getTime())) return value;
-
- const day = String(dt.getDate()).padStart(2,"0");
- const month = String(dt.getMonth()+1).padStart(2,"0");
- const year = dt.getFullYear();
-
- let hours = dt.getHours();
- const minutes = String(dt.getMinutes()).padStart(2,"0");
- const seconds = String(dt.getSeconds()).padStart(2,"0");
-
- const ampm = hours >= 12 ? "PM" : "AM";
- hours = hours % 12 || 12;
+ const day=String(dt.getDate()).padStart(2,"0");
+ const month=String(dt.getMonth()+1).padStart(2,"0");
+ const year=dt.getFullYear();
+ let hours=dt.getHours();
+ const minutes=String(dt.getMinutes()).padStart(2,"0");
+ const seconds=String(dt.getSeconds()).padStart(2,"0");
+ const ampm=hours>=12?"PM":"AM";
+ hours=hours%12||12;
 
  return day+"-"+month+"-"+year+" "+
  String(hours).padStart(2,"0")+":"+minutes+":"+seconds+" "+ampm;
 }
 
-function collectData() {
- const data = {};
- fieldIds.forEach(id => {
-  data[id] = document.getElementById(id).value;
+function collectData(){
+ const data={};
+ fieldIds.forEach(id=>{
+  data[id]=document.getElementById(id).value;
  });
+ data.updatedAt=new Date().toISOString();
  return data;
 }
 
-function fillForm(data) {
- fieldIds.forEach(id => {
-  document.getElementById(id).value =
-   data[id] !== undefined ? data[id] : "";
+function fillForm(data){
+ fieldIds.forEach(id=>{
+  document.getElementById(id).value=
+   data[id]!==undefined?data[id]:"";
  });
  updateBill();
 }
 
-function showFirebaseError(e, prefix) {
- const code = e && e.code ? e.code : "తెలియని Error";
- const message = e && e.message ? e.message : String(e);
- setStatus(prefix + ": " + code + " - " + message);
- console.error(prefix, e);
-}
+/* Local Storage + Firebase Save */
+async function saveCurrent(showMessage=true){
+ const order=document.getElementById("order").value.trim();
 
-async function connectFirebase() {
- if(connecting || firebaseReady) return;
-
- connecting = true;
-
- try {
-  if(typeof firebase === "undefined") {
-   throw new Error("Firebase లైబ్రరీ లోడ్ కాలేదు. Internet లేదా Script తనిఖీ చేయండి.");
-  }
-
-  if(!firebase.apps.length) {
-   firebase.initializeApp(firebaseConfig);
-  }
-
-  auth = firebase.auth();
-  db = firebase.firestore();
-
-  if(!auth.currentUser) {
-   await auth.signInAnonymously();
-  }
-
-  firebaseReady = true;
-  setStatus("Firebase కనెక్ట్ అయింది. ఇప్పుడు Online సేవ్ చేయవచ్చు.");
-
- } catch(e) {
-  firebaseReady = false;
-  showFirebaseError(e, "Firebase కనెక్షన్ సమస్య");
- } finally {
-  connecting = false;
- }
-}
-
-async function saveCurrent(showMessage = true) {
- const order = document.getElementById("order").value.trim();
-
- if(!order) {
+ if(!order){
   setStatus("ముందుగా Order ID నమోదు చేయండి.");
   return false;
  }
 
- const data = collectData();
+ const data=collectData();
 
- // ముందుగా ఫోన్‌లో సేవ్ అవుతుంది
- try {
-  const orders = getOrders();
-  orders[order] = data;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
- } catch(e) {
-  setStatus("ఫోన్‌లో సేవ్ కాలేదు: " + e.message);
+ /* ముందుగా మొబైల్‌లో సేవ్ */
+ try{
+  const orders=getOrders();
+  orders[order]=data;
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(orders));
+ }catch(e){
+  setStatus("Local Storage సేవ్ కాలేదు.");
   return false;
  }
 
- // Firebase కనెక్షన్ లేకపోతే మళ్లీ కనెక్ట్ ప్రయత్నం
- if(!firebaseReady) {
-  await connectFirebase();
+ /* Firebaseలో కూడా సేవ్ */
+ if(showMessage){
+  setStatus("మొబైల్‌లో సేవ్ అయింది. Firebaseకు పంపిస్తున్నాం...");
  }
 
- if(!firebaseReady) {
-  if(showMessage) {
-   setStatus("ఫోన్‌లో Local గా సేవ్ అయ్యాయి. Firebase కనెక్ట్ కాలేదు. Error పై ఉన్న వివరాలు చూడండి.");
+ try{
+  if(!connectionPromise){
+   firebaseConnect();
   }
+
+  if(!await connectionPromise){
+   if(showMessage)setStatus("మొబైల్‌లో సేవ్ అయింది. Firebase కనెక్షన్ లేదు.");
+   return true;
+  }
+
+  await db.collection(COLLECTION_NAME)
+   .doc(order)
+   .set(data,{merge:true});
+
+  if(showMessage)setStatus("Order "+order+" Firebase మరియు మొబైల్‌లో సేవ్ అయింది.");
+
+  return true;
+
+ }catch(error){
+  console.error("Firestore Save Error:",error);
+  if(showMessage)setStatus("మొబైల్‌లో సేవ్ అయింది. Firebase Save సమస్య: "+error.message);
   return true;
  }
-
- try {
-  await db.collection("orders")
-   .doc(encodeURIComponent(order))
-   .set(data, {merge:true});
-
-  const regId = document.getElementById("regId").value.trim();
-
-  if(regId) {
-   const registrationData = {
-    regId: data.regId,
-    consumerName: data.consumerName,
-    consumerMobile: data.consumerMobile,
-    constructionName: data.constructionName,
-    regDateTime: data.regDateTime,
-    regType: data.regType,
-    regQty: data.regQty,
-    regAddress: data.regAddress
-   };
-
-   await db.collection("registrations")
-    .doc(encodeURIComponent(regId))
-    .set(registrationData, {merge:true});
-  }
-
-  if(showMessage) {
-   setStatus("Order " + order + " Firebase లో సేవ్ అయింది.");
-  }
-
- } catch(e) {
-  showFirebaseError(e, "Firebase Save Error");
- }
-
- return true;
 }
 
-async function loadOrder() {
- const order = document.getElementById("order").value.trim();
- if(!order) return;
+/* Order ID ద్వారా పాత బిల్ తెరవడం */
+async function loadOrder(){
+ const order=document.getElementById("order").value.trim();
+ if(!order)return;
 
- const orders = getOrders();
+ setStatus("Order వివరాలు వెతుకుతున్నాం...");
 
- if(orders[order]) {
+ /* ముందుగా Firebaseలో వెతకడం */
+ try{
+  if(!connectionPromise)firebaseConnect();
+
+  if(connectionPromise && await connectionPromise){
+   const doc=await db.collection(COLLECTION_NAME).doc(order).get();
+
+   if(doc.exists){
+    const data=doc.data();
+    fillForm(data);
+
+    /* Local Storageలో కూడా కాపీ */
+    const orders=getOrders();
+    orders[order]=data;
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(orders));
+
+    setStatus("Order "+order+" Firebase నుంచి వచ్చింది.");
+    return;
+   }
+  }
+ }catch(error){
+  console.error("Firebase Load Error:",error);
+ }
+
+ /* Firebaseలో లేకపోతే Local Storage */
+ const orders=getOrders();
+
+ if(orders[order]){
   fillForm(orders[order]);
-  setStatus("ఫోన్‌లో సేవ్ చేసిన Order వివరాలు వచ్చాయి.");
- }
-
- if(!firebaseReady) {
-  await connectFirebase();
- }
-
- if(!firebaseReady) return;
-
- try {
-  const doc = await db.collection("orders")
-   .doc(encodeURIComponent(order))
-   .get();
-
-  if(doc.exists) {
-   fillForm(doc.data());
-
-   // Firebase నుంచి వచ్చిన తాజా వివరాలను ఫోన్‌లో కూడా ఉంచుతుంది
-   const latestOrders = getOrders();
-   latestOrders[order] = doc.data();
-   localStorage.setItem(STORAGE_KEY, JSON.stringify(latestOrders));
-
-   setStatus("Firebase నుంచి Order వివరాలు వచ్చాయి.");
-  } else if(!orders[order]) {
-   fieldIds.filter(id => id !== "order").forEach(id => {
-    document.getElementById(id).value = "";
-   });
-   updateBill();
-   setStatus("ఈ Order ID Firebase లో లేదు. కొత్త వివరాలు నమోదు చేయండి.");
-  }
-
- } catch(e) {
-  showFirebaseError(e, "Firebase Load Error");
+  setStatus("Order "+order+" మొబైల్‌లోని పాత వివరాలు వచ్చాయి.");
+ }else{
+  fieldIds.filter(id=>id!=="order").forEach(id=>{
+   document.getElementById(id).value="";
+  });
+  updateBill();
+  setStatus("కొత్త Order ID. వివరాలు నమోదు చేయండి.");
  }
 }
 
-function updateBill() {
- const fields = [
+function updateBill(){
+ const fields=[
   ["order","o1","o2"],
   ["trip","t1","t2"],
   ["customer","c1","c2"],
@@ -447,46 +416,38 @@ function updateBill() {
   ["address","a1","a2"]
  ];
 
- fields.forEach(f => {
-  let value = getValue(f[0]);
-
-  if(f[0] === "quantity" && value !== "-") {
-   value += " Tons";
-  }
-
-  if(f[0] === "date") {
-   value = formatDate(value);
-  }
-
+ fields.forEach(f=>{
+  let value=getValue(f[0]);
+  if(f[0]==="quantity"&&value!=="-")value+=" Tons";
+  if(f[0]==="date")value=formatDate(value);
   put(f[1],value);
   put(f[2],value);
  });
 }
 
-function makeQR(callback) {
- const section = document.getElementById("billQR");
- section.innerHTML = "";
+/* QR Code */
+function makeQR(callback){
+ const section=document.getElementById("billQR");
+ section.innerHTML="";
 
- const img = document.createElement("img");
- img.alt = "AP Sand Billing QR Code";
+ const img=document.createElement("img");
+ img.alt="AP Sand Billing QR Code";
 
- img.onload = function() {
-  const thanks = document.createElement("div");
-  thanks.id = "qrThanks";
-  thanks.textContent = "Thank You";
+ img.onload=function(){
+  const thanks=document.createElement("div");
+  thanks.id="qrThanks";
+  thanks.textContent="Thank You";
   section.appendChild(thanks);
-
-  if(typeof callback === "function") callback(true);
+  if(typeof callback==="function")callback(true);
  };
 
- img.onerror = function() {
-  section.innerHTML = "";
-  alert("QR కోడ్ తయారు కాలేదు. Internet తనిఖీ చేయండి.");
-
-  if(typeof callback === "function") callback(false);
+ img.onerror=function(){
+  section.innerHTML="";
+  alert("QR కోడ్ తయారు కాలేదు. ఇంటర్నెట్ తనిఖీ చేయండి.");
+  if(typeof callback==="function")callback(false);
  };
 
- img.src =
+ img.src=
   "https://api.qrserver.com/v1/create-qr-code/"+
   "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
   encodeURIComponent(REGISTRATION_URL);
@@ -494,68 +455,57 @@ function makeQR(callback) {
  section.appendChild(img);
 }
 
-function previewBill() {
+function previewBill(){
  updateBill();
-
- makeQR(function(success) {
-  if(success) {
+ makeQR(function(success){
+  if(success){
    document.getElementById("receipt").scrollIntoView({
-    behavior:"smooth",
-    block:"start"
+    behavior:"smooth",block:"start"
    });
   }
  });
 }
 
-async function printBill() {
+function printBill(){
  updateBill();
 
- const saved = await saveCurrent(true);
- if(!saved) return;
+ /* Firebase కోసం Print ఆగదు */
+ saveCurrent(true);
 
- makeQR(function(success) {
-  if(success) window.print();
+ makeQR(function(success){
+  if(success)window.print();
  });
 }
 
-function resetForm() {
- if(!confirm("కొత్త బిల్ ప్రారంభించాలా? సేవ్ చేసిన Orders తొలగవు.")) {
-  return;
- }
+function resetForm(){
+ if(!confirm("కొత్త బిల్ ప్రారంభించాలా? సేవ్ చేసిన Orders తొలగవు."))return;
 
  document.querySelectorAll("#entryForm input,#entryForm textarea")
- .forEach(el => el.value = "");
+ .forEach(el=>el.value="");
 
- document.getElementById("billQR").innerHTML = "";
+ document.getElementById("billQR").innerHTML="";
  updateBill();
-
  setStatus("కొత్త బిల్ కోసం Order ID నమోదు చేయండి.");
  document.getElementById("order").focus();
 }
 
 document.getElementById("order").addEventListener("change",loadOrder);
 document.getElementById("order").addEventListener("blur",loadOrder);
-
-document.getElementById("order").addEventListener("keydown",e => {
- if(e.key === "Enter") {
+document.getElementById("order").addEventListener("keydown",e=>{
+ if(e.key==="Enter"){
   e.preventDefault();
   loadOrder();
  }
 });
 
-fieldIds.filter(id => id !== "order").forEach(id => {
- const el = document.getElementById(id);
+fieldIds.filter(id=>id!=="order").forEach(id=>{
+ const el=document.getElementById(id);
  el.addEventListener("input",updateBill);
  el.addEventListener("change",updateBill);
 });
 
 updateBill();
-connectFirebase();
-
-window.addEventListener("online", function() {
- if(!firebaseReady) connectFirebase();
-});
+firebaseConnect();
 </script>
-
 </body>
 </html>
