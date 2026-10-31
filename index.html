@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="te">
 <head>
@@ -120,7 +121,7 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <label>Registration Address</label>
 <textarea id="regAddress" rows="3" placeholder="Enter Registration Address"></textarea>
 
-<div id="status">Order ID నమోదు చేసి వివరాలు నమోదు చేయండి.</div>
+<div id="status">Firebase కనెక్షన్ కోసం వేచి ఉండండి...</div>
 
 <button type="button" onclick="previewBill()">Preview Bill</button>
 <button type="button" onclick="printBill()">Print 3-inch Bill / PDF</button>
@@ -130,164 +131,153 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 
 <div id="receipt">
 
-  <div class="copy">
-    <div class="bill-header">
-      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
-      <div class="bill-title">
-        <span class="ap-sand">AP SAND</span>
-        <span class="management">MANAGEMENT SYSTEM</span>
-      </div>
-    </div>
-    <div class="subtitle">Consumer Copy</div>
-    <div class="line"></div>
-    <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o1">-</span></div>
-    <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t1">-</span></div>
-    <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c1">-</span></div>
-    <div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m1">-</span></div>
-    <div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q1">-</span></div>
-    <div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s1">-</span></div>
-    <div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d1">-</span></div>
-    <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr1">-</span></div>
-    <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm1">-</span></div>
-    <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v1">-</span></div>
-    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a1">-</span></div>
-    <div class="line"></div>
-  </div>
-
-  <div class="copy">
-    <div class="bill-header">
-      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
-      <div class="bill-title">
-        <span class="ap-sand">AP SAND</span>
-        <span class="management">MANAGEMENT SYSTEM</span>
-      </div>
-    </div>
-    <div class="subtitle">Driver Copy</div>
-    <div class="line"></div>
-    <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o2">-</span></div>
-    <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t2">-</span></div>
-    <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c2">-</span></div>
-    <div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m2">-</span></div>
-    <div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q2">-</span></div>
-    <div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s2">-</span></div>
-    <div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d2">-</span></div>
-    <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr2">-</span></div>
-    <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm2">-</span></div>
-    <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v2">-</span></div>
-    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
-    <div class="line"></div>
-  </div>
-
-  <div id="billQR">
-    <div id="qrThanks">Thank You</div>
-  </div>
+<div class="copy">
+<div class="bill-header">
+<img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
+<div class="bill-title">
+<span class="ap-sand">AP SAND</span>
+<span class="management">MANAGEMENT SYSTEM</span>
+</div>
+</div>
+<div class="subtitle">Consumer Copy</div>
+<div class="line"></div>
+<div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o1">-</span></div>
+<div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t1">-</span></div>
+<div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c1">-</span></div>
+<div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m1">-</span></div>
+<div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q1">-</span></div>
+<div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s1">-</span></div>
+<div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d1">-</span></div>
+<div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr1">-</span></div>
+<div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm1">-</span></div>
+<div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v1">-</span></div>
+<div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a1">-</span></div>
+<div class="line"></div>
 </div>
 
-<script>
-const STORAGE_KEY="apSandOrders_v1";
+<div class="copy">
+<div class="bill-header">
+<img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
+<div class="bill-title">
+<span class="ap-sand">AP SAND</span>
+<span class="management">MANAGEMENT SYSTEM</span>
+</div>
+</div>
+<div class="subtitle">Driver Copy</div>
+<div class="line"></div>
+<div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o2">-</span></div>
+<div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t2">-</span></div>
+<div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c2">-</span></div>
+<div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m2">-</span></div>
+<div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q2">-</span></div>
+<div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s2">-</span></div>
+<div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d2">-</span></div>
+<div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr2">-</span></div>
+<div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm2">-</span></div>
+<div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v2">-</span></div>
+<div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
+<div class="line"></div>
+</div>
 
-/* కొత్త QR తెరిచే వెబ్‌సైట్ లింక్ */
+<div id="billQR">
+<div id="qrThanks">Thank You</div>
+</div>
+
+</div>
+
+<!-- Firebase Libraries -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+
+// YOUR FIREBASE CONFIGURATION
+const firebaseConfig = {
+ apiKey: "AIzaSyBAxO9XUQ2ChADnpZMFEFqGmyJmWsxxko8",
+ authDomain: "ap-sand-billing.firebaseapp.com",
+ projectId: "ap-sand-billing",
+ storageBucket: "ap-sand-billing.firebasestorage.app",
+ messagingSenderId: "908803132126",
+ appId: "1:908803132126:web:04e7bdafaa6baf80bb104f",
+ measurementId: "G-RXHD8RW3WX"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
 const REGISTRATION_URL =
 "https://chashok1629-tech.github.io/Sand---billing-/";
 
-const fieldIds=[
+const fieldIds = [
  "order","trip","customer","mobile","quantity","supply","date",
  "driver","driverMobile","vehicle","address","regId","consumerName",
  "consumerMobile","constructionName","regDateTime","regType","regQty",
  "regAddress"
 ];
 
-function getOrders(){
- try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}
- catch(e){return {}}
+let firebaseReady = false;
+let loadRequest = 0;
+
+function setStatus(message) {
+ document.getElementById("status").textContent = message;
 }
 
-function getValue(id){
- const el=document.getElementById(id);
- return el ? el.value.trim()||"-" : "-";
+function getValue(id) {
+ const el = document.getElementById(id);
+ return el ? el.value.trim() || "-" : "-";
 }
 
-function put(id,value){
- document.getElementById(id).textContent=value;
+function put(id,value) {
+ document.getElementById(id).textContent = value;
 }
 
-function setStatus(message){
- document.getElementById("status").textContent=message;
-}
+function formatDate(value) {
+ if (!value || value === "-") return "-";
 
-function formatDate(value){
- if(!value||value==="-")return "-";
- const dt=new Date(value);
- if(isNaN(dt.getTime()))return value;
+ const dt = new Date(value);
+ if (isNaN(dt.getTime())) return value;
 
- const day=String(dt.getDate()).padStart(2,"0");
- const month=String(dt.getMonth()+1).padStart(2,"0");
- const year=dt.getFullYear();
- let hours=dt.getHours();
- const minutes=String(dt.getMinutes()).padStart(2,"0");
- const seconds=String(dt.getSeconds()).padStart(2,"0");
- const ampm=hours>=12?"PM":"AM";
- hours=hours%12||12;
+ const day = String(dt.getDate()).padStart(2,"0");
+ const month = String(dt.getMonth()+1).padStart(2,"0");
+ const year = dt.getFullYear();
+
+ let hours = dt.getHours();
+ const minutes = String(dt.getMinutes()).padStart(2,"0");
+ const seconds = String(dt.getSeconds()).padStart(2,"0");
+ const ampm = hours >= 12 ? "PM" : "AM";
+
+ hours = hours % 12 || 12;
 
  return day+"-"+month+"-"+year+" "+
  String(hours).padStart(2,"0")+":"+minutes+":"+seconds+" "+ampm;
 }
 
-function collectData(){
- const data={};
- fieldIds.forEach(id=>{
-  data[id]=document.getElementById(id).value;
+function collectData() {
+ const data = {};
+
+ fieldIds.forEach(id => {
+  data[id] = document.getElementById(id).value;
  });
+
+ data.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+
  return data;
 }
 
-function fillForm(data){
- fieldIds.forEach(id=>{
-  document.getElementById(id).value=
-   data[id]!==undefined?data[id]:"";
+function fillForm(data) {
+ fieldIds.forEach(id => {
+  document.getElementById(id).value =
+   data[id] !== undefined ? data[id] : "";
  });
+
  updateBill();
 }
 
-function saveCurrent(showMessage=true){
- const order=document.getElementById("order").value.trim();
- if(!order){
-  setStatus("ముందుగా Order ID నమోదు చేయండి.");
-  return false;
- }
-
- try{
-  const orders=getOrders();
-  orders[order]=collectData();
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(orders));
-  if(showMessage)setStatus("Order "+order+" వివరాలు సేవ్ అయ్యాయి.");
-  return true;
- }catch(e){
-  setStatus("సేవ్ కాలేదు. బ్రౌజర్ స్టోరేజ్ తనిఖీ చేయండి.");
-  return false;
- }
-}
-
-function loadOrder(){
- const order=document.getElementById("order").value.trim();
- if(!order)return;
-
- const orders=getOrders();
-
- if(orders[order]){
-  fillForm(orders[order]);
-  setStatus("Order "+order+" పాత వివరాలు వచ్చాయి.");
- }else{
-  fieldIds.filter(id=>id!=="order").forEach(id=>{
-   document.getElementById(id).value="";
-  });
-  updateBill();
-  setStatus("కొత్త Order ID. వివరాలు నమోదు చేయండి.");
- }
-}
-
-function updateBill(){
- const fields=[
+function updateBill() {
+ const fields = [
   ["order","o1","o2"],
   ["trip","t1","t2"],
   ["customer","c1","c2"],
@@ -301,39 +291,133 @@ function updateBill(){
   ["address","a1","a2"]
  ];
 
- fields.forEach(f=>{
-  let value=getValue(f[0]);
-  if(f[0]==="quantity"&&value!=="-")value+=" Tons";
-  if(f[0]==="date")value=formatDate(value);
+ fields.forEach(f => {
+  let value = getValue(f[0]);
+
+  if (f[0] === "quantity" && value !== "-")
+   value += " Tons";
+
+  if (f[0] === "date")
+   value = formatDate(value);
+
   put(f[1],value);
   put(f[2],value);
  });
 }
 
-/* పాత QR స్థానంలో కొత్త వెబ్‌సైట్ లింక్ QR */
-function makeQR(callback){
- const section=document.getElementById("billQR");
- section.innerHTML="";
+// FIREBASE LOGIN
+auth.signInAnonymously()
+.then(() => {
+ firebaseReady = true;
+ setStatus("Firebase కనెక్ట్ అయింది. Order ID నమోదు చేయండి.");
+})
+.catch(error => {
+ firebaseReady = false;
+ setStatus("Firebase Login Error: " + error.message);
+});
 
- const img=document.createElement("img");
- img.alt="AP Sand Billing QR Code";
+// SAVE ORDER TO FIREBASE
+async function saveCurrent() {
 
- img.onload=function(){
-  const thanks=document.createElement("div");
-  thanks.id="qrThanks";
-  thanks.textContent="Thank You";
+ const order = document.getElementById("order").value.trim();
+
+ if (!order) {
+  setStatus("ముందుగా Order ID నమోదు చేయండి.");
+  return false;
+ }
+
+ if (!firebaseReady || !auth.currentUser) {
+  setStatus("Firebase కనెక్షన్ కోసం వేచి ఉండండి.");
+  return false;
+ }
+
+ try {
+  setStatus("Order "+order+" సేవ్ అవుతోంది...");
+
+  await db.collection("orders").doc(order).set(
+   collectData(),
+   {merge:true}
+  );
+
+  setStatus("Order "+order+" వివరాలు Firebaseలో విజయవంతంగా సేవ్ అయ్యాయి.");
+
+  return true;
+
+ } catch(error) {
+  console.error(error);
+  setStatus("Save Error: "+error.message);
+  return false;
+ }
+}
+
+// LOAD ORDER FROM FIREBASE
+async function loadOrder() {
+
+ const order = document.getElementById("order").value.trim();
+
+ if (!order) return;
+
+ if (!firebaseReady) {
+  setStatus("Firebase కనెక్షన్ కోసం వేచి ఉండండి.");
+  return;
+ }
+
+ const requestNumber = ++loadRequest;
+
+ try {
+  setStatus("Order "+order+" వివరాలు వెతుకుతున్నాం...");
+
+  const doc = await db.collection("orders").doc(order).get();
+
+  if (requestNumber !== loadRequest ||
+      document.getElementById("order").value.trim() !== order) {
+   return;
+  }
+
+  if (doc.exists) {
+   fillForm(doc.data());
+   setStatus("Order "+order+" పాత వివరాలు Firebase నుంచి వచ్చాయి.");
+  } else {
+   fieldIds.filter(id => id !== "order").forEach(id => {
+    document.getElementById(id).value = "";
+   });
+
+   updateBill();
+   setStatus("కొత్త Order ID. వివరాలు నమోదు చేయండి.");
+  }
+
+ } catch(error) {
+  console.error(error);
+  setStatus("Load Error: "+error.message);
+ }
+}
+
+// QR CODE
+function makeQR(callback) {
+
+ const section = document.getElementById("billQR");
+ section.innerHTML = "";
+
+ const img = document.createElement("img");
+ img.alt = "AP Sand Billing QR Code";
+
+ img.onload = function() {
+  const thanks = document.createElement("div");
+  thanks.id = "qrThanks";
+  thanks.textContent = "Thank You";
   section.appendChild(thanks);
 
-  if(typeof callback==="function")callback(true);
+  if (typeof callback === "function") callback(true);
  };
 
- img.onerror=function(){
-  section.innerHTML="";
-  alert("QR కోడ్ తయారు కాలేదు. ఇంటర్నెట్ తనిఖీ చేయండి.");
-  if(typeof callback==="function")callback(false);
+ img.onerror = function() {
+  section.innerHTML = "";
+  alert("QR కోడ్ తయారు కాలేదు. Internet తనిఖీ చేయండి.");
+
+  if (typeof callback === "function") callback(false);
  };
 
- img.src=
+ img.src =
   "https://api.qrserver.com/v1/create-qr-code/"+
   "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
   encodeURIComponent(REGISTRATION_URL);
@@ -341,54 +425,79 @@ function makeQR(callback){
  section.appendChild(img);
 }
 
-function previewBill(){
+function previewBill() {
  updateBill();
- makeQR(function(success){
-  if(success){
+
+ makeQR(function(success) {
+  if (success) {
    document.getElementById("receipt").scrollIntoView({
-    behavior:"smooth",block:"start"
+    behavior:"smooth",
+    block:"start"
    });
   }
  });
 }
 
-function printBill(){
+// PRINT
+async function printBill() {
  updateBill();
- if(!saveCurrent(true))return;
 
- makeQR(function(success){
-  if(success)window.print();
+ const saved = await saveCurrent();
+
+ if (!saved) return;
+
+ makeQR(function(success) {
+  if (success) window.print();
  });
 }
 
-function resetForm(){
- if(!confirm("కొత్త బిల్ ప్రారంభించాలా? సేవ్ చేసిన Orders తొలగవు."))return;
+// RESET FORM
+function resetForm() {
 
- document.querySelectorAll("#entryForm input,#entryForm textarea")
- .forEach(el=>el.value="");
+ if (!confirm("కొత్త బిల్ ప్రారంభించాలా? Firebaseలో సేవ్ చేసిన Orders తొలగవు."))
+  return;
 
- document.getElementById("billQR").innerHTML="";
+ loadRequest++;
+
+ document.querySelectorAll(
+  "#entryForm input,#entryForm textarea"
+ ).forEach(el => el.value = "");
+
+ document.getElementById("billQR").innerHTML = "";
+
  updateBill();
+
  setStatus("కొత్త బిల్ కోసం Order ID నమోదు చేయండి.");
+
  document.getElementById("order").focus();
 }
 
+// ORDER ID EVENTS
 document.getElementById("order").addEventListener("change",loadOrder);
+
 document.getElementById("order").addEventListener("blur",loadOrder);
-document.getElementById("order").addEventListener("keydown",e=>{
- if(e.key==="Enter"){
+
+document.getElementById("order").addEventListener("keydown",e => {
+ if (e.key === "Enter") {
   e.preventDefault();
   loadOrder();
  }
 });
 
-fieldIds.filter(id=>id!=="order").forEach(id=>{
- const el=document.getElementById(id);
+document.getElementById("order").addEventListener("input",() => {
+ loadRequest++;
+});
+
+// UPDATE BILL WHILE TYPING
+fieldIds.filter(id => id !== "order").forEach(id => {
+ const el = document.getElementById(id);
+
  el.addEventListener("input",updateBill);
  el.addEventListener("change",updateBill);
 });
 
 updateBill();
+
 </script>
 </body>
-  </html>
+</html>
